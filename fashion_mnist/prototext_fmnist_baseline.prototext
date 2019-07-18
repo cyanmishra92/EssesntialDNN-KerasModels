@@ -1,0 +1,311 @@
+name: "MNIST_BASELINE"
+#  transform_param {
+#    scale: 0.017
+#    mirror: false
+#    crop_size: 224
+#    mean_value: [103.94,116.78,123.68]
+#  }
+input: "data"
+input_dim: 1
+input_dim: 1
+input_dim: 28
+input_dim: 28
+
+##################################################
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 32
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+
+layer {
+  name: "pool21"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool21"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+layer {
+  name: "bn1"
+  type: "BatchNorm"
+  bottom: "pool21"
+  top: "bn1"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act1"
+  type: "ReLU"
+  bottom: "bn1"
+  top: "act1"
+}
+##################################################
+
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "act1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: 0
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+
+layer {
+  name: "pool22"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool22"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+layer {
+  name: "bn2"
+  type: "BatchNorm"
+  bottom: "pool22"
+  top: "bn2"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act2"
+  type: "ReLU"
+  bottom: "bn2"
+  top: "act2"
+}
+##################################################
+
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "act2"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    bias_term: true
+    pad: -1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+
+
+layer {
+  name: "bn4"
+  type: "BatchNorm"
+  bottom: "conv4"
+  top: "bn4"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act4"
+  type: "ReLU"
+  bottom: "bn4"
+  top: "act4"
+}
+##################################################
+
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "act4"
+  top: "conv4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    num_output: 128
+    bias_term: true
+    pad: -1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+
+
+layer {
+  name: "bn5"
+  type: "BatchNorm"
+  bottom: "conv5"
+  top: "bn5"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act5"
+  type: "ReLU"
+  bottom: "bn5"
+  top: "act5"
+}
+##################################################
+
+layer {
+  name: "dns21"
+  type: "InnerProduct"
+  bottom: "act5"
+  top: "dns21"
+  inner_product_param {
+    num_output: 128
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+
+layer {
+  name: "bn_d3"
+  type: "BatchNorm"
+  bottom: "dns21"
+  top: "bn_d3"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act_d3"
+  type: "ReLU"
+  bottom: "bn_d3"
+  top: "act_d3"
+}
+
+##################################################
+
+layer {
+  name: "dns22"
+  type: "InnerProduct"
+  bottom: "act_d3"
+  top: "dns22"
+  inner_product_param {
+    num_output: 10
+    weight_filler {
+      type: "xavier"
+    }
+  }
+}
+
+layer {
+  name: "bn_d4"
+  type: "BatchNorm"
+  bottom: "dns32"
+  top: "bn_d4"
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+  param {
+    lr_mult: 0.0
+    decay_mult: 0.0
+  }
+}
+
+layer {
+  name: "act_d4"
+  type: "Softmax"
+  bottom: "bn_d4"
+  top: "act_d4"
+}
